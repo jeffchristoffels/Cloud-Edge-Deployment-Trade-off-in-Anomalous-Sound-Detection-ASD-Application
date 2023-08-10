@@ -15,8 +15,6 @@ import librosa
 import librosa.core
 import librosa.feature
 import yaml
-import pylab
-import matplotlib.pyplot as plt
 
 ########################################################################
 
@@ -25,17 +23,16 @@ import matplotlib.pyplot as plt
 # setup STD I/O
 ########################################################################
 """
-Standard output is logged in "baseline.log".
+Standard output is logged in "common.log".
 """
 import logging
 
-logging.basicConfig(level=logging.DEBUG, filename="baseline.log")
+logging.basicConfig(level=logging.DEBUG, filename="common.log")
 logger = logging.getLogger(' ')
 handler = logging.StreamHandler()
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
-
 
 ########################################################################
 
@@ -44,6 +41,8 @@ logger.addHandler(handler)
 # version
 ########################################################################
 __versions__ = "1.0.0"
+
+
 ########################################################################
 
 
@@ -69,6 +68,8 @@ def command_line_chk():
         print("incorrect argument")
         print("please set option argument '--dev' or '--eval'")
     return flag
+
+
 ########################################################################
 
 
@@ -79,6 +80,7 @@ def yaml_load():
     with open("parameters.yaml") as stream:
         param = yaml.safe_load(stream)
     return param
+
 
 ########################################################################
 
@@ -141,13 +143,6 @@ def file_to_vectors(file_name,
     # convert melspectrogram to log mel energies
     log_mel_spectrogram = 20.0 / power * np.log10(np.maximum(mel_spectrogram, sys.float_info.epsilon))
 
-    fig, ax = plt.subplots()
-    img = librosa.display.specshow(log_mel_spectrogram, x_axis='time',
-                                   y_axis='mel', sr=sr,
-                                   fmax=8000, ax=ax)
-    fig.colorbar(img, ax=ax, format='%+2.0f dB')
-    plt.show()
-
     # calculate total vector size
     n_vectors = len(log_mel_spectrogram[0, :]) - n_frames + 1
 
@@ -158,7 +153,7 @@ def file_to_vectors(file_name,
     # generate feature vectors by concatenating multiframes
     vectors = np.zeros((n_vectors, dims))
     for t in range(n_frames):
-        vectors[:, n_mels * t : n_mels * (t + 1)] = log_mel_spectrogram[:, t : t + n_vectors].T
+        vectors[:, n_mels * t: n_mels * (t + 1)] = log_mel_spectrogram[:, t: t + n_vectors].T
 
     return vectors
 
@@ -172,7 +167,7 @@ def file_to_vectors(file_name,
 def select_dirs(param, mode):
     """
     param : dict
-        baseline.yaml data
+        parameters.yaml data
 
     return :
         if active type the development :
@@ -265,25 +260,27 @@ def file_list_generator(target_dir,
 
     # development
     if mode:
-        query = os.path.abspath("{target_dir}/{dir_name}/{section_name}_*_{prefix_normal}_*.{ext}".format(target_dir=target_dir,
-                                                                                                     dir_name=dir_name,
-                                                                                                     section_name=section_name,
-                                                                                                     prefix_normal=prefix_normal,
-                                                                                                     ext=ext))
+        query = os.path.abspath(
+            "{target_dir}/{dir_name}/{section_name}_*_{prefix_normal}_*.{ext}".format(target_dir=target_dir,
+                                                                                      dir_name=dir_name,
+                                                                                      section_name=section_name,
+                                                                                      prefix_normal=prefix_normal,
+                                                                                      ext=ext))
         normal_files = sorted(glob.glob(query))
         normal_labels = np.zeros(len(normal_files))
 
-        query = os.path.abspath("{target_dir}/{dir_name}/{section_name}_*_{prefix_normal}_*.{ext}".format(target_dir=target_dir,
-                                                                                                     dir_name=dir_name,
-                                                                                                     section_name=section_name,
-                                                                                                     prefix_normal=prefix_anomaly,
-                                                                                                     ext=ext))
+        query = os.path.abspath(
+            "{target_dir}/{dir_name}/{section_name}_*_{prefix_normal}_*.{ext}".format(target_dir=target_dir,
+                                                                                      dir_name=dir_name,
+                                                                                      section_name=section_name,
+                                                                                      prefix_normal=prefix_anomaly,
+                                                                                      ext=ext))
         anomaly_files = sorted(glob.glob(query))
         anomaly_labels = np.ones(len(anomaly_files))
 
         files = np.concatenate((normal_files, anomaly_files), axis=0)
         labels = np.concatenate((normal_labels, anomaly_labels), axis=0)
-        
+
         logger.info("#files : {num}".format(num=len(files)))
         if len(files) == 0:
             logger.exception("no_wav_file!!")
@@ -292,9 +289,9 @@ def file_list_generator(target_dir,
     # evaluation
     else:
         query = os.path.abspath("{target_dir}/{dir_name}/{section_name}_*.{ext}".format(target_dir=target_dir,
-                                                                                                     dir_name=dir_name,
-                                                                                                     section_name=section_name,
-                                                                                                     ext=ext))
+                                                                                        dir_name=dir_name,
+                                                                                        section_name=section_name,
+                                                                                        ext=ext))
         files = sorted(glob.glob(query))
         labels = None
         logger.info("#files : {num}".format(num=len(files)))
