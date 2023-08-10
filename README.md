@@ -7,5 +7,6 @@ Baseline models from:
 * Noboru Harada, Daisuke Niizumi, Daiki Takeuchi, Yasunori Ohishi, Masahiro Yasuda, Shoichiro Saito, "ToyADMOS2: Another Dataset of Miniature-Machine Operating Sounds for Anomalous Sound Detection under Domain Shift Conditions," in arXiv e-prints: 2106.02369, 2021. [URL](https://arxiv.org/abs/2106.02369)
 * Ryo Tanabe, Harsh Purohit, Kota Dohi, Takashi Endo, Yuki Nikaido, Toshiki Nakamura, and Yohei Kawaguchi, "MIMII DUE: Sound Dataset for Malfunctioning Industrial Machine Investigation and Inspection with Domain Shifts due to Changes in Operational and Environmental Conditions," in arXiv e-prints: 2105.02702, 2021. [URL](https://arxiv.org/abs/2105.02702)
 
-The code to train and evaluate the autoencoder-based baseline can be found [here](https://github.com/y-kawagu/dcase2021_task2_baseline_ae) .
+The code to train and evaluate the autoencoder-based baseline can be found [here](https://github.com/y-kawagu/dcase2021_task2_baseline_ae).
+
 The code to train and evaluate the MobileNetV2-based baseline can be found [here](https://github.com/y-kawagu/dcase2021_task2_baseline_mobile_net_v2).
