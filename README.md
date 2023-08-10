@@ -8,5 +8,4 @@ Baseline models from:
 * Ryo Tanabe, Harsh Purohit, Kota Dohi, Takashi Endo, Yuki Nikaido, Toshiki Nakamura, and Yohei Kawaguchi, "MIMII DUE: Sound Dataset for Malfunctioning Industrial Machine Investigation and Inspection with Domain Shifts due to Changes in Operational and Environmental Conditions," in arXiv e-prints: 2105.02702, 2021. [URL](https://arxiv.org/abs/2105.02702)
 
 The code to train and evaluate the autoencoder-based baseline can be found [here](https://github.com/y-kawagu/dcase2021_task2_baseline_ae).
-
 The code to train and evaluate the MobileNetV2-based baseline can be found [here](https://github.com/y-kawagu/dcase2021_task2_baseline_mobile_net_v2).
