@@ -6,9 +6,10 @@ import numpy as np
 import tensorflow as tf
 
 def representative_data_gen():
-    dir = "/Users/Jeff/Desktop/Thesis/dev_data/" + machine_type + "/train/"
-    for i in range(100):
-        audio_file = random.choice(os.listdir(dir))
+    dir = "/path/to/dev_data/" + machine_type + "/train/"
+    filenames = random.sample(os.listdir(dir), 100)
+
+    for audio_file in filenames:
         file_path = dir + audio_file
 
         try:
